@@ -1,0 +1,70 @@
+---
+---
+
+/* Import the theme’s styles first */
+@import "jekyll-theme-cayman";
+
+/* Make header more compact & useful */
+.page-header {
+  padding: 1.25rem 0; /* was quite tall by default */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: saturate(130%) blur(2px);
+}
+
+.header-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 40px; height: 40px;
+  border-radius: 50%; /* looks good for avatars & round logos */
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.25);
+}
+
+.brand-text .project-name { margin: 0; font-size: 1.25rem; color: white; }
+.brand-text .project-tagline { margin: 0; opacity: .9; font-size: .9rem; }
+
+/* Simple, horizontal nav */
+.site-nav ul {
+  display: flex; gap: 1rem; margin: 0; padding: 0; list-style: none;
+}
+.site-nav a { text-decoration: none; font-weight: 600; }
+.site-nav a:hover { text-decoration: underline; }
+
+/* Smooth in-page scrolling for section links */
+html { scroll-behavior: smooth; }
+
+/* Footer */
+.site-footer {
+  margin-top: 2rem;
+  padding: 1rem 0 2rem;
+  border-top: 1px solid rgba(0,0,0,.08);
+  font-size: .95rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: start;
+}
+.site-footer .muted { opacity: .75; margin: .25rem 0 0; }
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1rem; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+/* Ensure main content leaves space if you use sticky headers */
+.main-content { padding-top: 1rem; }

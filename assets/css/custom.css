@@ -1,0 +1,16 @@
+/* Customize colors and typography here. Keep it readable and accessible. */
+:root {
+  --brand: #0a4d8c;   /* primary */
+  --accent: #2f9e44;  /* accent */
+}
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3 { margin-top: 1.2rem; }
+.site-nav a { font-weight: 600; }
+hr { margin: .75rem 0 1.25rem 0; }
+
+/* Example color usage */
+.site-nav a { color: var(--brand); }
+a { color: var(--brand); }
+strong { color: var(--accent); }

@@ -1,0 +1,24 @@
+<header class="page-header">
+  <div class="container header-grid">
+    <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title | escape }}">
+      {% assign logo = page.logo_url | default: site.logo_url %}
+      {% if logo %}
+        <img class="brand-logo" src="{{ logo | relative_url }}" alt="" />
+      {% endif %}
+      <div class="brand-text">
+        <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
+        {% if site.tagline %}<p class="project-tagline">{{ site.tagline }}</p>{% endif %}
+      </div>
+    </a>
+    {% assign links = page.nav | default: site.nav %}
+    {% if links %}
+      <nav class="site-nav" aria-label="Primary">
+        <ul>
+          {% for item in links %}
+            <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</header>
