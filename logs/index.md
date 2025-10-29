@@ -1,6 +1,6 @@
 {% include nav.html %}
 
-# Device Clinic Logs
+#   How can local government be contacted?
 
 Document real maintenance tasks (drivers, firmware, backups). Each entry should include:
 - Device ID and specs
