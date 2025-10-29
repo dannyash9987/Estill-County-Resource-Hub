@@ -10,7 +10,7 @@ Welcome! This is the Resource Hub for **Estill County KY**!
 
 Navigate with the links below:
 
-- [Home](/about/)
-- [Where can Local Gov. be found?](/kb/)
-- [Local Government Off. #'s](/logs/)
-- [Map of County](/net/)
+- [Home](/Estill-County-Resource-Hub/about/)
+- [Where can Local Gov. be found?](/Estill-County-Resource-Hub/kb/)
+- [Local Government Off. #'s](/Estill-County-Resource-Hub/logs/)
+- [Map of County](/Estill-County-Resource-Hub/net/)
