@@ -1,7 +1,7 @@
-title: Student Portfolio
-description: Portfolio site template
-url: "https://estillcountyatc-computerscience.github.io"  # no trailing slash
-baseurl: "/portfolio-template"                             # leading slash required
+title: Estill County, Kentucky Resource Hub
+description: This is the official Resource Hub for Estill County, KY.
+url:  # no trailing slash
+baseurl:                             # leading slash required
 
 # Choose ONE of these (theme OR remote_theme):
 # theme: jekyll-theme-cayman
@@ -10,6 +10,3 @@ plugins:
   - jekyll-remote-theme
 
 markdown: kramdown
-
-# Helps the github-metadata plugin:
-repository: estillcountyatc-computerscience/portfolio-template
