@@ -1,6 +1,6 @@
 {% include nav.html %}
 
-# Help Desk Knowledge Base
+# Where can Local Gov. be found?
 
 Write short, step‑by‑step guides your classmates can follow. Start with:
 - Password reset
