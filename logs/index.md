@@ -7,4 +7,5 @@ If the answer is **NO** then read on!
 - Social Media
 - Office Phone
 - Email
-- (IF) they have a Website
+- Letter
+  - Address can be found online  
