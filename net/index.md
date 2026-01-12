@@ -50,24 +50,30 @@
     const towns = [
         {
             name: "Irvine",
-            coords: [37.7006, -83.9732],
+            coords: [37.7006, -83.9738],
             description: "County Seat"
         },
         {
             name: "Ravenna",
-            coords: [37.6945, -84.0272],
+            coords: [37.6945, -83.9530],
             description: "City in Estill County"
         },
         {
             name: "Cobhill",
-            coords: [37.6842, -83.9481],
+            coords: [37.7151, -83.8285],
             description: "Unincorporated Community"
         },
         {
             name: "White Oak",
-            coords: [37.6641, -83.9834],
+            coords: [37.7100, -83.9943],
             description: "Unincorporated Community"
-        }
+        },
+        {
+            name: "Cow Creek",
+            coords: [37.4128, -83.9423],
+            description: "Unincorporated Community"
+
+                     
     ];
 
     // Add town markers with permanent labels
