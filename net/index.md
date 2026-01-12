@@ -59,7 +59,7 @@ const osm = L.tileLayer(
 // =======================
 [
   { name: "Irvine", coords: [37.7006, -83.9732] },
-  { name: "Ravenna", coords: [37.6948, -84.0280] }
+  { name: "Ravenna", coords: [37.6948, -83.9530] }
 ].forEach(town => {
   L.circleMarker(town.coords, {
     radius: 6,
@@ -71,24 +71,7 @@ const osm = L.tileLayer(
 });
 
 // =======================
-// 3. ESTILL COUNTY BOUNDARY
-// =======================
-// Simplified GeoJSON boundary
-fetch("https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json")
-  .then(r => r.json())
-  .then(data => {
-    const estill = data.features.find(f => f.id === "21065");
-    L.geoJSON(estill, {
-      style: {
-        color: "#000",
-        weight: 2,
-        fillOpacity: 0.05
-      }
-    }).addTo(map);
-  });
-
-// =======================
-// 4. RADAR ANIMATION (RainViewer)
+// 3. RADAR ANIMATION (RainViewer)
 // =======================
 let radarLayers = [];
 let radarIndex = 0;
@@ -115,7 +98,7 @@ fetch("https://api.rainviewer.com/public/weather-maps.json")
   });
 
 // =======================
-// 5. STORM CELL TRACKING
+// 4. STORM CELL TRACKING
 // =======================
 const stormCells = L.tileLayer(
   "https://tilecache.rainviewer.com/v2/nowcast/{z}/{x}/{y}/2/1_1.png",
@@ -123,7 +106,7 @@ const stormCells = L.tileLayer(
 );
 
 // =======================
-// 6. NWS ALERTS (NO API KEY)
+// 5. NWS ALERTS (NO API KEY)
 // =======================
 fetch("https://api.weather.gov/alerts/active?area=KY")
   .then(r => r.json())
@@ -145,7 +128,7 @@ fetch("https://api.weather.gov/alerts/active?area=KY")
   });
 
 // =======================
-// 7. LAYER CONTROL
+// 6. LAYER CONTROL
 // =======================
 L.control.layers(
   { "OpenStreetMap": osm },
