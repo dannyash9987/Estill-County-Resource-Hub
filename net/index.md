@@ -1,143 +1,94 @@
 {% include nav.html %}
 
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Estill County KY Weather Map</title>
+    <meta charset="UTF-8">
+    <title>Estill County Radar Map</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css"
+    />
 
-<style>
-#map {
-    height: 700px;
-    width: 100%;
-}
-
-.town-label {
-    background: rgba(255,255,255,0.85);
-    border: none;
-    font-weight: bold;
-    font-size: 13px;
-    padding: 2px 6px;
-}
-
-.alert-box {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background: white;
-    padding: 10px;
-    max-width: 300px;
-    font-size: 13px;
-    z-index: 999;
-    border-left: 6px solid red;
-}
-</style>
+    <style>
+      #map { height: 90vh; }
+      #sliderContainer {
+        text-align: center;
+        margin-top: 4px;
+      }
+    </style>
 </head>
-
 <body>
 
-<h2>Estill County, Kentucky — Live Weather Map</h2>
 <div id="map"></div>
-<div id="alerts" class="alert-box">Loading alerts…</div>
+<div id="sliderContainer">
+    <input type="range" id="timeSlider" min="0" max="0" step="1" />
+    <span id="timeLabel">Loading...</span>
+</div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-// =======================
-// 1. MAP SETUP
-// =======================
-const map = L.map("map").setView([37.697, -83.98], 11);
+(async function () {
+    // 1) Create map
+    const map = L.map("map").setView([37.7, -83.96], 11);
 
-const osm = L.tileLayer(
-  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  { attribution: "&copy; OpenStreetMap" }
-).addTo(map);
+    // Base layer
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+    }).addTo(map);
 
-// =======================
-// 2. CITIES
-// =======================
-[
-  { name: "Irvine", coords: [37.7006, -83.9732] },
-  { name: "Ravenna", coords: [37.6948, -83.9530] }
-].forEach(town => {
-  L.circleMarker(town.coords, {
-    radius: 6,
-    color: "#08519c",
-    fillColor: "#2c7fb8",
-    fillOpacity: 0.9
-  }).addTo(map)
-    .bindTooltip(town.name, { permanent: true, className: "town-label" });
-});
+    // 2) Add markers for Irvine & Ravenna
+    const irvineMarker = L.marker([37.7006, -83.9738]).addTo(map)
+        .bindPopup("Irvine, KY");
+    const ravennaMarker = L.marker([37.6845, -83.9530]).addTo(map)
+        .bindPopup("Ravenna, KY");
 
-// =======================
-// 3. RADAR ANIMATION (RainViewer)
-// =======================
-let radarLayers = [];
-let radarIndex = 0;
+    // 3) Load radar times from RainViewer API
+    const radarJson = await fetch("https://api.rainviewer.com/public/weather-maps.json")
+        .then(r => r.json());
 
-fetch("https://api.rainviewer.com/public/weather-maps.json")
-  .then(r => r.json())
-  .then(data => {
-    data.radar.past.slice(-6).forEach(frame => {
-      radarLayers.push(
-        L.tileLayer(
-          `https://tilecache.rainviewer.com/v2/radar/${frame.time}/256/{z}/{x}/{y}/2/1_1.png`,
-          { opacity: 0.6 }
-        )
-      );
-    });
-
-    radarLayers[0].addTo(map);
-
-    setInterval(() => {
-      map.removeLayer(radarLayers[radarIndex]);
-      radarIndex = (radarIndex + 1) % radarLayers.length;
-      radarLayers[radarIndex].addTo(map);
-    }, 1200);
-  });
-
-// =======================
-// 4. STORM CELL TRACKING
-// =======================
-const stormCells = L.tileLayer(
-  "https://tilecache.rainviewer.com/v2/nowcast/{z}/{x}/{y}/2/1_1.png",
-  { opacity: 0.5 }
-);
-
-// =======================
-// 5. NWS ALERTS (NO API KEY)
-// =======================
-fetch("https://api.weather.gov/alerts/active?area=KY")
-  .then(r => r.json())
-  .then(data => {
-    const estillAlerts = data.features.filter(alert =>
-      alert.properties.areaDesc.includes("Estill")
-    );
-
-    const alertDiv = document.getElementById("alerts");
-
-    if (estillAlerts.length === 0) {
-      alertDiv.innerHTML = "<b>No active alerts for Estill County</b>";
-      alertDiv.style.borderLeft = "6px solid green";
-    } else {
-      alertDiv.innerHTML = estillAlerts.map(a =>
-        `<b>${a.properties.event}</b><br>${a.properties.headline}`
-      ).join("<hr>");
+    const radarFrames = radarJson.radar.past.concat(radarJson.radar.nowcast || []);
+    if (!radarFrames || !radarFrames.length) {
+        document.getElementById("timeLabel").textContent = "No Radar Data";
+        return;
     }
-  });
 
-// =======================
-// 6. LAYER CONTROL
-// =======================
-L.control.layers(
-  { "OpenStreetMap": osm },
-  {
-    "Storm Cell Tracking": stormCells
-  },
-  { collapsed: false }
-).addTo(map);
+    // 4) Create radar layer container
+    let radarLayer = null;
 
+    // 5) Slider setup
+    const slider = document.getElementById("timeSlider");
+    slider.max = radarFrames.length - 1;
+    slider.oninput = () => showFrame(slider.value);
+
+    function showFrame(index) {
+        const frame = radarFrames[index];
+
+        document.getElementById("timeLabel").textContent =
+            new Date(frame.time * 1000).toLocaleString();
+
+        const urlTemplate =
+            radarJson.host +
+            frame.path +
+            "/{z}/{x}/{y}/2/1_1.png";
+
+        if (radarLayer) map.removeLayer(radarLayer);
+
+        radarLayer = L.tileLayer(urlTemplate, {
+          opacity: 0.5,
+          pane: "overlayPane"
+        }).addTo(map);
+    }
+
+    // Show first frame
+    showFrame(0);
+
+})();
 </script>
+
 </body>
 </html>
+
