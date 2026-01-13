@@ -4,8 +4,3 @@
 
 "Do you know how you're local government can be contacted?"
 If the answer is **NO** then read on!
-- Social Media
-- Office Phone
-- Email
-- Letter
-  - Address can be found online  
