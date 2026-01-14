@@ -1,94 +1,100 @@
 {% include nav.html %}
 
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Estill County Radar Map</title>
+<meta charset="UTF-8">
+<title>Estill County KY Weather Radar</title>
 
-    <!-- Leaflet CSS -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet/dist/leaflet.css"
-    />
+<!-- Leaflet CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
-    <style>
-      #map { height: 90vh; }
-      #sliderContainer {
-        text-align: center;
-        margin-top: 4px;
-      }
-    </style>
+<style>
+  body { margin: 0; padding: 0; }
+  #map { height: 90vh; width: 100%; }
+  #controls {
+    height: 10vh;
+    padding: 10px;
+    background: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+  }
+  input[type=range] {
+    width: 100%;
+  }
+</style>
 </head>
+
 <body>
 
 <div id="map"></div>
-<div id="sliderContainer">
-    <input type="range" id="timeSlider" min="0" max="0" step="1" />
-    <span id="timeLabel">Loading...</span>
+
+<div id="controls">
+  <label>Radar Time:</label>
+  <input type="range" id="timeSlider" min="0" max="0" value="0">
+  <div id="timeLabel"></div>
 </div>
 
 <!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-(async function () {
-    // 1) Create map
-    const map = L.map("map").setView([37.7, -83.96], 11);
+const map = L.map('map').setView([37.68, -83.97], 10);
 
-    // Base layer
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-    }).addTo(map);
+// Base map
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18
+}).addTo(map);
 
-    // 2) Add markers for Irvine & Ravenna
-    const irvineMarker = L.marker([37.7006, -83.9738]).addTo(map)
-        .bindPopup("Irvine, KY");
-    const ravennaMarker = L.marker([37.6845, -83.9530]).addTo(map)
-        .bindPopup("Ravenna, KY");
+// City markers
+L.marker([37.70, -83.97]).addTo(map)
+  .bindPopup("<b>Irvine, KY</b>");
 
-    // 3) Load radar times from RainViewer API
-    const radarJson = await fetch("https://api.rainviewer.com/public/weather-maps.json")
-        .then(r => r.json());
+L.marker([37.73, -84.03]).addTo(map)
+  .bindPopup("<b>Ravenna, KY</b>");
 
-    const radarFrames = radarJson.radar.past.concat(radarJson.radar.nowcast || []);
-    if (!radarFrames || !radarFrames.length) {
-        document.getElementById("timeLabel").textContent = "No Radar Data";
-        return;
-    }
+// RainViewer radar setup
+let radarLayer = null;
+let radarFrames = [];
+let currentFrame = 0;
 
-    // 4) Create radar layer container
-    let radarLayer = null;
+// Fetch radar data
+fetch("https://api.rainviewer.com/public/weather-maps.json")
+  .then(res => res.json())
+  .then(data => {
+    radarFrames = [
+      ...data.radar.past,
+      ...data.radar.nowcast   // near-future frames
+    ];
 
-    // 5) Slider setup
     const slider = document.getElementById("timeSlider");
     slider.max = radarFrames.length - 1;
-    slider.oninput = () => showFrame(slider.value);
 
-    function showFrame(index) {
-        const frame = radarFrames[index];
+    updateRadar(0);
 
-        document.getElementById("timeLabel").textContent =
-            new Date(frame.time * 1000).toLocaleString();
+    slider.addEventListener("input", e => {
+      updateRadar(e.target.value);
+    });
+  });
 
-        const urlTemplate =
-            radarJson.host +
-            frame.path +
-            "/{z}/{x}/{y}/2/1_1.png";
+function updateRadar(index) {
+  const frame = radarFrames[index];
 
-        if (radarLayer) map.removeLayer(radarLayer);
+  if (radarLayer) {
+    map.removeLayer(radarLayer);
+  }
 
-        radarLayer = L.tileLayer(urlTemplate, {
-          opacity: 0.5,
-          pane: "overlayPane"
-        }).addTo(map);
-    }
+  radarLayer = L.tileLayer(
+    `https://tilecache.rainviewer.com/v2/radar/${frame.path}/256/{z}/{x}/{y}/2/1_1.png`,
+    { opacity: 0.7 }
+  ).addTo(map);
 
-    // Show first frame
-    showFrame(0);
-
-})();
+  document.getElementById("timeLabel").innerText =
+    new Date(frame.time * 1000).toLocaleString();
+}
 </script>
 
 </body>
 </html>
-
