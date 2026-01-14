@@ -49,11 +49,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // City markers
-L.marker([37.70, -83.97]).addTo(map)
-  .bindPopup("<b>Irvine, KY</b>");
+L.marker([37.7006, -83.9738]).addTo(map)
+  .bindPopup("<b>Irvine, Kentucky</b>");
 
-L.marker([37.73, -84.03]).addTo(map)
-  .bindPopup("<b>Ravenna, KY</b>");
+L.marker([37.6845, -83.9530]).addTo(map)
+  .bindPopup("<b>Ravenna, Kentucky</b>");
 
 // RainViewer radar setup
 let radarLayer = null;
