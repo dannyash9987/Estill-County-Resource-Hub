@@ -23,7 +23,7 @@
       title: "County Judge-Executive",
       phone: "(606) 723-7524",
       website: "https://estillky.com/", // official Estill County website :contentReference[oaicite:1]{index=1}
-      imgSrc: "[images/donniewatson.jpg](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3H1zusmanJX2skhLJYkFIGKZCiD1syyOnww&s)"
+      imgSrc: "document.body.insertAdjacentHTML('beforeend', '<img src="https://operationunite.org" alt="Donnie Watson, Estill County Judge Executive" style="width:300px;">');"
     },
     {
       name: "Christopher Flynn",
