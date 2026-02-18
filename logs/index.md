@@ -45,9 +45,26 @@ const estillCountyOfficials = [
     name: "Elizabeth Walling",
     phone: "(606) 723-5181",
     email: "ElizabethB.Walling@estillcohd.org" // Estill County Health Department contact :contentReference[oaicite:5]{index=5}
- }
+  },
+  {
+    title: "Magistrate – District 1",
+    name: "Mike Abney",
+    phone: "(859) 582-1817",
+    email: null
+  },
+  {
+    title: "Magistrate – District 2",
+    name: "Paul Tipton",
+    phone: "(606) 975-1543",
+    email: null
+  },
+  {
+    title: "Magistrate – District 3",
+    name: "Gerry Flannery",
+    phone: "(606) 643-5219",
+    email: null
+  }
 ];
 
 // Example: log all officials
 console.log(estillCountyOfficials);
-
