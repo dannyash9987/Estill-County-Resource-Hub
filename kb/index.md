@@ -23,14 +23,14 @@
       title: "County Judge-Executive",
       phone: "(606) 723-7524",
       website: "https://estillky.com/", // official Estill County website :contentReference[oaicite:1]{index=1}
-      imgSrc: "images/donniewatson.jpg"
+      imgSrc: "[images/donniewatson.jpg](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3H1zusmanJX2skhLJYkFIGKZCiD1syyOnww&s)"
     },
     {
       name: "Christopher Flynn",
       title: "County Sheriff",
       phone: "(606) 723-2323",
       website: "https://estillky.com/sheriff/", // official Sheriff page :contentReference[oaicite:2]{index=2}
-      imgSrc: "images/chrisflynn.jpg"
+      imgSrc: "[images/chrisflynn.jpg](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtXaaxRV8ezmbsHVNPXUmkJJQ-zYCZfzahnQ&s)"
     },
     {
       name: "Kimberly Charles",
